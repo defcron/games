@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.m
 
 import { Player } from './player.js';
 import { Environment } from './environment.js';
-import { LEVELS } from './levels.js';
+import { generateLevel, LEVEL_COUNT } from './levels.js';
 
 class Game {
   constructor() {
@@ -16,6 +16,7 @@ class Game {
       1000
     );
     this.camera.position.set(0, 2, 5);
+    this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -82,7 +83,7 @@ class Game {
   }
 
   loadLevel(index) {
-    const data = LEVELS[index];
+    const data = generateLevel(index);
     this.environment.createObstacles(data.obstacles);
     this.environment.createPickups(data.pickups);
     this.environment.createEnemies(data.enemies);
@@ -92,9 +93,9 @@ class Game {
 
   nextLevel() {
     this.currentLevel += 1;
-    if (this.currentLevel >= LEVELS.length) {
+    if (this.currentLevel >= LEVEL_COUNT) {
       this.showMessage('You escaped! Thanks for playing.', 10);
-      this.currentLevel = LEVELS.length - 1;
+      this.currentLevel = LEVEL_COUNT - 1;
       return;
     }
     this.loadLevel(this.currentLevel);
