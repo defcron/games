@@ -9,6 +9,11 @@ export class Player {
     this.scoreElement = scoreElement;
     this.messageCallback = messageCallback;
     this.score = 0;
+    this.sounds = {
+      jump: new Audio('https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg'),
+      pickup: new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg'),
+      hit: new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg')
+    };
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
       new THREE.MeshStandardMaterial({ color: 0x44aa88 })
@@ -38,24 +43,26 @@ export class Player {
   }
 
   update(delta) {
-    this.velocity.x = 0;
-    this.velocity.z = 0;
-    
-    if (this.keys['ArrowLeft']) this.velocity.x -= this.speed * delta;
-    if (this.keys['ArrowRight']) this.velocity.x += this.speed * delta;
-    if (this.keys['ArrowUp']) this.velocity.z -= this.speed * delta;
-    if (this.keys['ArrowDown']) this.velocity.z += this.speed * delta;
+    // horizontal movement with simple acceleration and friction
+    if (this.keys['ArrowLeft']) this.velocity.x -= this.speed * 5 * delta;
+    if (this.keys['ArrowRight']) this.velocity.x += this.speed * 5 * delta;
+    if (this.keys['ArrowUp']) this.velocity.z -= this.speed * 5 * delta;
+    if (this.keys['ArrowDown']) this.velocity.z += this.speed * 5 * delta;
+
+    this.velocity.x *= 0.9;
+    this.velocity.z *= 0.9;
 
     if (this.keys['Space'] && this.onGround) {
       this.velocity.y = this.jumpSpeed;
       this.onGround = false;
+      this.sounds.jump.play();
     }
 
     // apply gravity
     this.velocity.y -= 9.8 * delta;
 
     const previous = this.mesh.position.clone();
-    this.mesh.position.add(this.velocity);
+    this.mesh.position.addScaledVector(this.velocity, delta);
     this.box.setFromObject(this.mesh);
 
     for (let i = this.pickups.length - 1; i >= 0; i--) {
@@ -65,6 +72,7 @@ export class Player {
         pickup.collect();
         this.pickups.splice(i, 1);
         this.score += 1;
+        this.sounds.pickup.play();
         if (this.scoreElement) {
           this.scoreElement.textContent = `Score: ${this.score}`;
         }
@@ -82,11 +90,13 @@ export class Player {
     }
 
     for (const enemy of this.enemies) {
-      enemy.update(delta);
+      enemy.update(delta, this);
       if (this.box.intersectsBox(enemy.box)) {
         if (this.messageCallback) {
           this.messageCallback('You were hit! Returning to start.');
         }
+        this.sounds.hit.play();
+        if (enemy.dispose) enemy.dispose();
         this.reset();
         break;
       }

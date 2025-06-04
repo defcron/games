@@ -2,10 +2,12 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.m
 import { Obstacle } from './obstacle.js';
 import { Pickup } from './pickup.js';
 import { Enemy } from './enemy.js';
+import { Turret } from './turret.js';
 
 export class Environment {
   constructor(scene) {
     this.scene = scene;
+    this.player = null;
     this.obstacles = [];
     this.pickups = [];
     this.enemies = [];
@@ -27,6 +29,15 @@ export class Environment {
     this.scene.add(ambient);
   }
 
+  setPlayer(player) {
+    this.player = player;
+    for (const e of this.enemies) {
+      if (typeof e.player !== 'undefined') {
+        e.player = player;
+      }
+    }
+  }
+
   clearObstacles() {
     for (const obs of this.obstacles) {
       this.scene.remove(obs.mesh);
@@ -43,7 +54,7 @@ export class Environment {
 
   clearEnemies() {
     for (const e of this.enemies) {
-      this.scene.remove(e.mesh);
+      if (e.mesh) this.scene.remove(e.mesh);
     }
     this.enemies = [];
   }
@@ -67,8 +78,13 @@ export class Environment {
   createEnemies(configs = []) {
     this.clearEnemies();
     for (const cfg of configs) {
-      const enemy = new Enemy(this.scene, cfg.position, cfg.axis, cfg.range, cfg.speed);
-      this.enemies.push(enemy);
+      if (cfg.type === 'turret') {
+        const turret = new Turret(this.scene, cfg.position, cfg.interval, cfg.projectileSpeed, this);
+        this.enemies.push(turret);
+      } else {
+        const enemy = new Enemy(this.scene, cfg.position, cfg.axis, cfg.range, cfg.speed);
+        this.enemies.push(enemy);
+      }
     }
   }
 }
