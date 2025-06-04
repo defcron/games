@@ -23,6 +23,15 @@ export const LEVEL_GENERATORS = [
       { position: randomVector(0.5), axis: 'x', range: 4, speed: 2 },
     ],
   }),
+  () => ({
+    message: 'Level 3: Dodge the turret fire to escape!',
+    pickups: [randomVector(0.3), randomVector(0.3), randomVector(0.3), randomVector(0.3)],
+    obstacles: [randomVector(0.5), randomVector(0.5), randomVector(0.5)],
+    enemies: [
+      { position: randomVector(0.5), axis: 'x', range: 4, speed: 2 },
+      { type: 'turret', position: new THREE.Vector3(0, 0.4, 0), interval: 2, projectileSpeed: 6 }
+    ],
+  }),
 ];
 
 export const LEVEL_COUNT = LEVEL_GENERATORS.length;

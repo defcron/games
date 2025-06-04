@@ -69,6 +69,8 @@ class Game {
       (msg) => this.showMessage(msg, 2)
     );
 
+    this.environment.setPlayer(this.player);
+
     this.animate = this.animate.bind(this);
     this.animate();
   }
@@ -94,7 +96,7 @@ class Game {
   nextLevel() {
     this.currentLevel += 1;
     if (this.currentLevel >= LEVEL_COUNT) {
-      this.showMessage('You escaped! Thanks for playing.', 10);
+      this.showMessage(`You escaped with ${this.player.score} points! Thanks for playing.`, 10);
       this.currentLevel = LEVEL_COUNT - 1;
       return;
     }
