@@ -16,18 +16,36 @@ export class Player {
 
     this.velocity = new THREE.Vector3();
     this.speed = 2;
+    this.jumpSpeed = 5;
+    this.onGround = true;
     this.keys = {};
     window.addEventListener('keydown', (e) => (this.keys[e.code] = true));
     window.addEventListener('keyup', (e) => (this.keys[e.code] = false));
   }
 
   update(delta) {
-    this.velocity.set(0, 0, 0);
+    this.velocity.x = 0;
+    this.velocity.z = 0;
+    
     if (this.keys['ArrowLeft']) this.velocity.x -= this.speed * delta;
     if (this.keys['ArrowRight']) this.velocity.x += this.speed * delta;
     if (this.keys['ArrowUp']) this.velocity.z -= this.speed * delta;
     if (this.keys['ArrowDown']) this.velocity.z += this.speed * delta;
 
+    if (this.keys['Space'] && this.onGround) {
+      this.velocity.y = this.jumpSpeed;
+      this.onGround = false;
+    }
+
+    // apply gravity
+    this.velocity.y -= 9.8 * delta;
+
     this.mesh.position.add(this.velocity);
+
+    if (this.mesh.position.y <= 0.5) {
+      this.mesh.position.y = 0.5;
+      this.velocity.y = 0;
+      this.onGround = true;
+    }
   }
 }

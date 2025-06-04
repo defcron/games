@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 
 import { Player } from './player.js';
+import { Environment } from './environment.js';
 
 class Game {
   constructor() {
@@ -20,6 +21,8 @@ class Game {
     document.body.appendChild(this.renderer.domElement);
 
     window.addEventListener('resize', () => this.onResize());
+
+    this.environment = new Environment(this.scene);
 
     this.player = new Player(this.scene);
 

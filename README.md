@@ -3,4 +3,4 @@ Computer games developed by GPTs and other LLMs.
 
 ## Projects
 
-- [New 3D WebGL Game](webgl-game/README.md) – early prototype using Three.js.
+- [New 3D WebGL Game](webgl-game/README.md) – early prototype using Three.js with a jump-enabled cube and simple environment.
