@@ -1,16 +1,16 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 import { Obstacle } from './obstacle.js';
 import { Pickup } from './pickup.js';
+import { Enemy } from './enemy.js';
 
 export class Environment {
   constructor(scene) {
     this.scene = scene;
     this.obstacles = [];
     this.pickups = [];
+    this.enemies = [];
     this.createGround();
     this.addLighting();
-    this.createObstacles();
-    this.createPickups();
   }
 
   createGround() {
@@ -27,21 +27,48 @@ export class Environment {
     this.scene.add(ambient);
   }
 
-  createObstacles() {
-    const obstacle1 = new Obstacle(this.scene, new THREE.Vector3(3, 0.5, -2));
-    const obstacle2 = new Obstacle(this.scene, new THREE.Vector3(-2, 0.5, 2));
-    this.obstacles.push(obstacle1, obstacle2);
+  clearObstacles() {
+    for (const obs of this.obstacles) {
+      this.scene.remove(obs.mesh);
+    }
+    this.obstacles = [];
   }
 
-  createPickups() {
-    const positions = [
-      new THREE.Vector3(2, 0.3, -3),
-      new THREE.Vector3(-3, 0.3, 1),
-      new THREE.Vector3(0, 0.3, 3),
-    ];
+  clearPickups() {
+    for (const p of this.pickups) {
+      this.scene.remove(p.mesh);
+    }
+    this.pickups = [];
+  }
+
+  clearEnemies() {
+    for (const e of this.enemies) {
+      this.scene.remove(e.mesh);
+    }
+    this.enemies = [];
+  }
+
+  createObstacles(positions = []) {
+    this.clearObstacles();
+    for (const pos of positions) {
+      const obstacle = new Obstacle(this.scene, pos);
+      this.obstacles.push(obstacle);
+    }
+  }
+
+  createPickups(positions = []) {
+    this.clearPickups();
     for (const pos of positions) {
       const pickup = new Pickup(this.scene, pos);
       this.pickups.push(pickup);
+    }
+  }
+
+  createEnemies(configs = []) {
+    this.clearEnemies();
+    for (const cfg of configs) {
+      const enemy = new Enemy(this.scene, cfg.position, cfg.axis, cfg.range, cfg.speed);
+      this.enemies.push(enemy);
     }
   }
 }
