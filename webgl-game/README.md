@@ -6,6 +6,7 @@ This folder contains a prototype 3D WebGL game built with [Three.js](https://thr
 - Static obstacle cubes that block movement.
 - Collectible pickups that update an on-screen score.
 - A two level structure with a short storyline.
+- Dynamic placement of pickups, obstacles and enemies each time you play.
 - Moving enemy spheres on later levels that reset the player on contact.
 - On-screen HUD elements for the score, current level and story messages.
 
@@ -14,7 +15,7 @@ This folder contains a prototype 3D WebGL game built with [Three.js](https://thr
 - `index.html` sets up the page and loads the main module.
 - `src/main.js` bootstraps the `Game` class, which sets up the Three.js scene, camera, renderer and game loop.
  - `src/environment.js` manages the ground plane and lighting and spawns level entities.
- - `src/levels.js` contains data describing obstacle, pickup and enemy placement for each level.
+ - `src/levels.js` randomly generates obstacle, pickup and enemy placement for each level.
  - `src/enemy.js` defines a simple patrolling enemy sphere.
  - `src/obstacle.js` defines a basic `Obstacle` class for static cubes.
  - `src/player.js` defines a `Player` class that renders a cube and supports movement, jumping and collision detection with obstacles, pickups and enemies.

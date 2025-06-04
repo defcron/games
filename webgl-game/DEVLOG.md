@@ -11,13 +11,13 @@ This document summarizes the progress of the WebGL game.
 - Collectible pickups that update an on-screen score when collected.
 - Two level structure with enemy objects and dynamic spawning.
 - On-screen HUD for score and level with transient story messages.
+ - Levels randomly generate the layout of pickups, obstacles and enemies each playthrough.
 
 ## Changes in This Iteration
-- Refactored `Environment` to dynamically spawn obstacles, pickups and enemies.
-- Added `Enemy` class with patrolling movement.
-- Introduced `levels.js` containing data for two levels.
-- `Game` class now handles level progression and message display.
-- Player resets to start when colliding with an enemy.
+- Levels now generate random positions for pickups, obstacles and enemies on each load.
+- Added camera look-at adjustment so the player can see the play field clearly.
+- Created helper functions in `levels.js` for random vector creation and level generation.
+- Updated documentation to describe dynamic level placement.
 
 ## Remaining Work
 - Improve physics for smoother movement and jumping.
