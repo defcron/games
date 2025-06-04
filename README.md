@@ -5,4 +5,4 @@ See [WORKFLOW.md](WORKFLOW.md) for details on the development process.
 
 ## Projects
 
-- [New 3D WebGL Game](webgl-game/README.md) – simple three.js prototype ([dev log](webgl-game/DEVLOG.md)).
+ - [New 3D WebGL Game](webgl-game/README.md) – browser-based 3D game featuring levels, enemies and pickups ([dev log](webgl-game/DEVLOG.md)).
