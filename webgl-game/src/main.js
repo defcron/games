@@ -24,7 +24,7 @@ class Game {
 
     this.environment = new Environment(this.scene);
 
-    this.player = new Player(this.scene);
+    this.player = new Player(this.scene, this.environment.obstacles);
 
     this.animate = this.animate.bind(this);
     this.animate();
