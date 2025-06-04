@@ -1,19 +1,36 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 
 export class Player {
-  constructor(scene, obstacles = [], pickups = [], enemies = [], scoreElement = null, messageCallback = null) {
+  constructor(
+    scene,
+    obstacles = [],
+    pickups = [],
+    enemies = [],
+    healthPickups = [],
+    scoreElement = null,
+    healthElement = null,
+    messageCallback = null,
+    deathCallback = null
+  ) {
     this.scene = scene;
     this.obstacles = obstacles;
     this.pickups = pickups;
     this.enemies = enemies;
+    this.healthPickups = healthPickups;
     this.scoreElement = scoreElement;
+    this.healthElement = healthElement;
     this.messageCallback = messageCallback;
+    this.deathCallback = deathCallback;
     this.score = 0;
+    this.maxHealth = 3;
+    this.health = this.maxHealth;
     this.sounds = {
       jump: new Audio('https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg'),
       pickup: new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg'),
       hit: new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg')
     };
+    if (this.scoreElement) this.scoreElement.textContent = `Score: ${this.score}`;
+    if (this.healthElement) this.healthElement.textContent = `Health: ${this.health}`;
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
       new THREE.MeshStandardMaterial({ color: 0x44aa88 })
@@ -40,6 +57,23 @@ export class Player {
     this.mesh.position.copy(this.spawn);
     this.velocity.set(0, 0, 0);
     this.box.setFromObject(this.mesh);
+  }
+
+  hurt() {
+    this.health -= 1;
+    if (this.healthElement) this.healthElement.textContent = `Health: ${this.health}`;
+    this.sounds.hit.play();
+    if (this.health <= 0) {
+      if (this.deathCallback) this.deathCallback();
+    } else {
+      if (this.messageCallback) this.messageCallback('You were hit! Returning to start.');
+      this.reset();
+    }
+  }
+
+  heal() {
+    this.health = Math.min(this.maxHealth, this.health + 1);
+    if (this.healthElement) this.healthElement.textContent = `Health: ${this.health}`;
   }
 
   update(delta) {
@@ -79,6 +113,17 @@ export class Player {
       }
     }
 
+    for (let i = this.healthPickups.length - 1; i >= 0; i--) {
+      const hp = this.healthPickups[i];
+      hp.update();
+      if (this.box.intersectsBox(hp.box)) {
+        hp.collect();
+        this.healthPickups.splice(i, 1);
+        this.heal();
+        this.sounds.pickup.play();
+      }
+    }
+
     for (const obstacle of this.obstacles) {
       obstacle.update();
       if (this.box.intersectsBox(obstacle.box)) {
@@ -92,12 +137,8 @@ export class Player {
     for (const enemy of this.enemies) {
       enemy.update(delta, this);
       if (this.box.intersectsBox(enemy.box)) {
-        if (this.messageCallback) {
-          this.messageCallback('You were hit! Returning to start.');
-        }
-        this.sounds.hit.play();
         if (enemy.dispose) enemy.dispose();
-        this.reset();
+        this.hurt();
         break;
       }
     }

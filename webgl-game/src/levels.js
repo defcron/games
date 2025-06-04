@@ -32,6 +32,15 @@ export const LEVEL_GENERATORS = [
       { type: 'turret', position: new THREE.Vector3(0, 0.4, 0), interval: 2, projectileSpeed: 6 }
     ],
   }),
+  () => ({
+    message: 'Level 4: A stalker hunts you. Grab the green cube for health!',
+    pickups: [randomVector(0.3), randomVector(0.3), randomVector(0.3)],
+    healthPickups: [randomVector(0.3)],
+    obstacles: [randomVector(0.5), randomVector(0.5), randomVector(0.5)],
+    enemies: [
+      { type: 'chaser', position: randomVector(0.5), speed: 1.8 },
+    ],
+  }),
 ];
 
 export const LEVEL_COUNT = LEVEL_GENERATORS.length;

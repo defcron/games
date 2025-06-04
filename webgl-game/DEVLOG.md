@@ -12,14 +12,17 @@ This document summarizes the progress of the WebGL game.
 - Three level structure with enemy objects and dynamic spawning.
 - On-screen HUD for score and level with transient story messages.
 - Levels randomly generate the layout of pickups, obstacles and enemies each playthrough.
+- Health system with three hearts and restart on death.
+- Green health pickups that restore one heart.
+- New chaser enemy type that pursues the player.
+- Four levels with an expanding storyline.
 
 ## Changes in This Iteration
-- Added a third level featuring a projectile-firing turret enemy.
-- Created new `Turret` and `Projectile` classes for ranged attacks.
-- Enemies now receive the player reference for targeted behaviors.
-- Player movement now uses acceleration and friction for smoother control.
-- Added sound effects for jumping, collecting pickups and enemy collisions.
-- The final victory message displays your total score.
+- Introduced a persistent health system displayed on the HUD.
+- Added green health pickups which heal the player.
+- Implemented a chaser enemy that actively pursues the player.
+- Created a new fourth level showcasing the chaser and health pickups.
+- Game now restarts from the beginning when all health is lost.
 
 ## Remaining Work
 - Polish projectile behavior and tweak turret balance.

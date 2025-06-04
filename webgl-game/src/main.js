@@ -32,6 +32,15 @@ class Game {
     this.scoreElement.textContent = 'Score: 0';
     document.body.appendChild(this.scoreElement);
 
+    this.healthElement = document.createElement('div');
+    this.healthElement.id = 'health';
+    this.healthElement.style.position = 'absolute';
+    this.healthElement.style.top = '40px';
+    this.healthElement.style.left = '10px';
+    this.healthElement.style.color = 'white';
+    this.healthElement.style.fontFamily = 'sans-serif';
+    document.body.appendChild(this.healthElement);
+
     this.levelElement = document.createElement('div');
     this.levelElement.id = 'level';
     this.levelElement.style.position = 'absolute';
@@ -65,8 +74,11 @@ class Game {
       this.environment.obstacles,
       this.environment.pickups,
       this.environment.enemies,
+      this.environment.healthPickups,
       this.scoreElement,
-      (msg) => this.showMessage(msg, 2)
+      this.healthElement,
+      (msg) => this.showMessage(msg, 2),
+      () => this.restartGame()
     );
 
     this.environment.setPlayer(this.player);
@@ -88,6 +100,7 @@ class Game {
     const data = generateLevel(index);
     this.environment.createObstacles(data.obstacles);
     this.environment.createPickups(data.pickups);
+    this.environment.createHealthPickups(data.healthPickups || []);
     this.environment.createEnemies(data.enemies);
     this.levelElement.textContent = `Level: ${index + 1}`;
     this.showMessage(data.message, 4);
@@ -104,6 +117,22 @@ class Game {
     this.player.obstacles = this.environment.obstacles;
     this.player.pickups = this.environment.pickups;
     this.player.enemies = this.environment.enemies;
+    this.player.healthPickups = this.environment.healthPickups;
+    this.player.reset();
+  }
+
+  restartGame() {
+    this.showMessage('Game over! Restarting...', 3);
+    this.currentLevel = 0;
+    this.player.score = 0;
+    if (this.scoreElement) this.scoreElement.textContent = 'Score: 0';
+    this.loadLevel(this.currentLevel);
+    this.player.obstacles = this.environment.obstacles;
+    this.player.pickups = this.environment.pickups;
+    this.player.enemies = this.environment.enemies;
+    this.player.healthPickups = this.environment.healthPickups;
+    this.player.health = this.player.maxHealth;
+    if (this.healthElement) this.healthElement.textContent = `Health: ${this.player.health}`;
     this.player.reset();
   }
 

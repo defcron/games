@@ -5,12 +5,14 @@ This folder contains a prototype 3D WebGL game built with [Three.js](https://thr
 - Ground plane and ambient lighting.
 - Static obstacle cubes that block movement.
 - Collectible pickups that update an on-screen score.
-- A three level structure with an expanding storyline.
+- A four level structure with an expanding storyline.
 - Dynamic placement of pickups, obstacles and enemies each time you play.
 - Moving enemy spheres on later levels that reset the player on contact.
 - A turret enemy that fires projectiles on the final stage.
+- A chaser enemy introduced in level four.
+- Health system with heart pickups and game over state.
 - Sound effects for jumping, pickups and getting hit.
-- On-screen HUD elements for the score, current level and story messages.
+- On-screen HUD elements for the score, health, current level and story messages.
 
 ## Architecture
 
