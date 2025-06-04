@@ -1,9 +1,12 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 
 export class Player {
-  constructor(scene, obstacles = []) {
+  constructor(scene, obstacles = [], pickups = [], scoreElement = null) {
     this.scene = scene;
     this.obstacles = obstacles;
+    this.pickups = pickups;
+    this.scoreElement = scoreElement;
+    this.score = 0;
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
       new THREE.MeshStandardMaterial({ color: 0x44aa88 })
@@ -45,6 +48,19 @@ export class Player {
     const previous = this.mesh.position.clone();
     this.mesh.position.add(this.velocity);
     this.box.setFromObject(this.mesh);
+
+    for (let i = this.pickups.length - 1; i >= 0; i--) {
+      const pickup = this.pickups[i];
+      pickup.update();
+      if (this.box.intersectsBox(pickup.box)) {
+        pickup.collect();
+        this.pickups.splice(i, 1);
+        this.score += 1;
+        if (this.scoreElement) {
+          this.scoreElement.textContent = `Score: ${this.score}`;
+        }
+      }
+    }
 
     for (const obstacle of this.obstacles) {
       obstacle.update();

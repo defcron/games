@@ -1,13 +1,16 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 import { Obstacle } from './obstacle.js';
+import { Pickup } from './pickup.js';
 
 export class Environment {
   constructor(scene) {
     this.scene = scene;
     this.obstacles = [];
+    this.pickups = [];
     this.createGround();
     this.addLighting();
     this.createObstacles();
+    this.createPickups();
   }
 
   createGround() {
@@ -28,5 +31,17 @@ export class Environment {
     const obstacle1 = new Obstacle(this.scene, new THREE.Vector3(3, 0.5, -2));
     const obstacle2 = new Obstacle(this.scene, new THREE.Vector3(-2, 0.5, 2));
     this.obstacles.push(obstacle1, obstacle2);
+  }
+
+  createPickups() {
+    const positions = [
+      new THREE.Vector3(2, 0.3, -3),
+      new THREE.Vector3(-3, 0.3, 1),
+      new THREE.Vector3(0, 0.3, 3),
+    ];
+    for (const pos of positions) {
+      const pickup = new Pickup(this.scene, pos);
+      this.pickups.push(pickup);
+    }
   }
 }

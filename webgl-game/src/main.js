@@ -20,11 +20,26 @@ class Game {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
 
+    this.scoreElement = document.createElement('div');
+    this.scoreElement.id = 'score';
+    this.scoreElement.style.position = 'absolute';
+    this.scoreElement.style.top = '10px';
+    this.scoreElement.style.left = '10px';
+    this.scoreElement.style.color = 'white';
+    this.scoreElement.style.fontFamily = 'sans-serif';
+    this.scoreElement.textContent = 'Score: 0';
+    document.body.appendChild(this.scoreElement);
+
     window.addEventListener('resize', () => this.onResize());
 
     this.environment = new Environment(this.scene);
 
-    this.player = new Player(this.scene, this.environment.obstacles);
+    this.player = new Player(
+      this.scene,
+      this.environment.obstacles,
+      this.environment.pickups,
+      this.scoreElement
+    );
 
     this.animate = this.animate.bind(this);
     this.animate();
