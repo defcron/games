@@ -1,0 +1,1 @@
+Please continue development on the webgl game and follow the specified workflow as defined in the workflow md file, making significant large amounts of additions and feature improvements to the current game's features, content, amount of fun, nuance, complexity, storyline (adding one if there isn'r one present yet), and interactivity.
