@@ -11,7 +11,7 @@ This document summarizes the progress of the WebGL game.
 - Collectible pickups that update an on-screen score when collected.
 - Two level structure with enemy objects and dynamic spawning.
 - On-screen HUD for score and level with transient story messages.
- - Levels randomly generate the layout of pickups, obstacles and enemies each playthrough.
+- Levels randomly generate the layout of pickups, obstacles and enemies each playthrough.
 
 ## Changes in This Iteration
 - Levels now generate random positions for pickups, obstacles and enemies on each load.
