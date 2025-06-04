@@ -1,10 +1,13 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+import { Obstacle } from './obstacle.js';
 
 export class Environment {
   constructor(scene) {
     this.scene = scene;
+    this.obstacles = [];
     this.createGround();
     this.addLighting();
+    this.createObstacles();
   }
 
   createGround() {
@@ -19,5 +22,11 @@ export class Environment {
   addLighting() {
     const ambient = new THREE.AmbientLight(0x404040);
     this.scene.add(ambient);
+  }
+
+  createObstacles() {
+    const obstacle1 = new Obstacle(this.scene, new THREE.Vector3(3, 0.5, -2));
+    const obstacle2 = new Obstacle(this.scene, new THREE.Vector3(-2, 0.5, 2));
+    this.obstacles.push(obstacle1, obstacle2);
   }
 }

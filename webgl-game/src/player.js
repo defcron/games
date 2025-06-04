@@ -1,8 +1,9 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 
 export class Player {
-  constructor(scene) {
+  constructor(scene, obstacles = []) {
     this.scene = scene;
+    this.obstacles = obstacles;
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
       new THREE.MeshStandardMaterial({ color: 0x44aa88 })
@@ -19,6 +20,7 @@ export class Player {
     this.jumpSpeed = 5;
     this.onGround = true;
     this.keys = {};
+    this.box = new THREE.Box3().setFromObject(this.mesh);
     window.addEventListener('keydown', (e) => (this.keys[e.code] = true));
     window.addEventListener('keyup', (e) => (this.keys[e.code] = false));
   }
@@ -40,12 +42,25 @@ export class Player {
     // apply gravity
     this.velocity.y -= 9.8 * delta;
 
+    const previous = this.mesh.position.clone();
     this.mesh.position.add(this.velocity);
+    this.box.setFromObject(this.mesh);
+
+    for (const obstacle of this.obstacles) {
+      obstacle.update();
+      if (this.box.intersectsBox(obstacle.box)) {
+        this.mesh.position.copy(previous);
+        this.velocity.set(0, 0, 0);
+        this.box.setFromObject(this.mesh);
+        break;
+      }
+    }
 
     if (this.mesh.position.y <= 0.5) {
       this.mesh.position.y = 0.5;
       this.velocity.y = 0;
       this.onGround = true;
     }
+    this.box.setFromObject(this.mesh);
   }
 }
