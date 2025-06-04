@@ -5,6 +5,7 @@ This folder contains an early prototype of a new 3D WebGL game built with [Three
 - A ground plane and ambient lighting.
 - Two obstacle cubes positioned in the scene.
 - Basic collision detection so the player cannot pass through the obstacles.
+- Collectible pickups that increase a visible score when collected.
 
 ## Architecture
 
