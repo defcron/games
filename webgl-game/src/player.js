@@ -26,6 +26,7 @@ export class Player {
   update(delta) {
     this.velocity.x = 0;
     this.velocity.z = 0;
+    
     if (this.keys['ArrowLeft']) this.velocity.x -= this.speed * delta;
     if (this.keys['ArrowRight']) this.velocity.x += this.speed * delta;
     if (this.keys['ArrowUp']) this.velocity.z -= this.speed * delta;

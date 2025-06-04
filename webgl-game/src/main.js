@@ -23,6 +23,7 @@ class Game {
     window.addEventListener('resize', () => this.onResize());
 
     this.environment = new Environment(this.scene);
+
     this.player = new Player(this.scene);
 
     this.animate = this.animate.bind(this);
