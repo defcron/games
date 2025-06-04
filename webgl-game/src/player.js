@@ -1,17 +1,20 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
 
 export class Player {
-  constructor(scene, obstacles = [], pickups = [], scoreElement = null) {
+  constructor(scene, obstacles = [], pickups = [], enemies = [], scoreElement = null, messageCallback = null) {
     this.scene = scene;
     this.obstacles = obstacles;
     this.pickups = pickups;
+    this.enemies = enemies;
     this.scoreElement = scoreElement;
+    this.messageCallback = messageCallback;
     this.score = 0;
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
       new THREE.MeshStandardMaterial({ color: 0x44aa88 })
     );
-    this.mesh.position.y = 0.5;
+    this.spawn = new THREE.Vector3(0, 0.5, 0);
+    this.mesh.position.copy(this.spawn);
     scene.add(this.mesh);
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -26,6 +29,12 @@ export class Player {
     this.box = new THREE.Box3().setFromObject(this.mesh);
     window.addEventListener('keydown', (e) => (this.keys[e.code] = true));
     window.addEventListener('keyup', (e) => (this.keys[e.code] = false));
+  }
+
+  reset() {
+    this.mesh.position.copy(this.spawn);
+    this.velocity.set(0, 0, 0);
+    this.box.setFromObject(this.mesh);
   }
 
   update(delta) {
@@ -68,6 +77,17 @@ export class Player {
         this.mesh.position.copy(previous);
         this.velocity.set(0, 0, 0);
         this.box.setFromObject(this.mesh);
+        break;
+      }
+    }
+
+    for (const enemy of this.enemies) {
+      enemy.update(delta);
+      if (this.box.intersectsBox(enemy.box)) {
+        if (this.messageCallback) {
+          this.messageCallback('You were hit! Returning to start.');
+        }
+        this.reset();
         break;
       }
     }

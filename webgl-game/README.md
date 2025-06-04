@@ -1,19 +1,24 @@
 # New 3D WebGL Game
 
-This folder contains an early prototype of a new 3D WebGL game built with [Three.js](https://threejs.org/). The prototype currently includes:
+This folder contains a prototype 3D WebGL game built with [Three.js](https://threejs.org/). The game now features:
 - A movable cube character controlled with the arrow keys and space bar for jumping.
-- A ground plane and ambient lighting.
-- Two obstacle cubes positioned in the scene.
-- Basic collision detection so the player cannot pass through the obstacles.
-- Collectible pickups that increase a visible score when collected.
+- Ground plane and ambient lighting.
+- Static obstacle cubes that block movement.
+- Collectible pickups that update an on-screen score.
+- A two level structure with a short storyline.
+- Dynamic placement of pickups, obstacles and enemies each time you play.
+- Moving enemy spheres on later levels that reset the player on contact.
+- On-screen HUD elements for the score, current level and story messages.
 
 ## Architecture
 
 - `index.html` sets up the page and loads the main module.
 - `src/main.js` bootstraps the `Game` class, which sets up the Three.js scene, camera, renderer and game loop.
-- `src/environment.js` adds the ground plane, ambient lighting and creates obstacle objects.
-- `src/obstacle.js` defines a basic `Obstacle` class for static cubes.
-- `src/player.js` defines a `Player` class that renders a cube and supports movement, jumping and collision detection.
+ - `src/environment.js` manages the ground plane and lighting and spawns level entities.
+ - `src/levels.js` randomly generates obstacle, pickup and enemy placement for each level.
+ - `src/enemy.js` defines a simple patrolling enemy sphere.
+ - `src/obstacle.js` defines a basic `Obstacle` class for static cubes.
+ - `src/player.js` defines a `Player` class that renders a cube and supports movement, jumping and collision detection with obstacles, pickups and enemies.
 
 The project uses ES modules and loads dependencies from public CDNs so there is no local build step required.
 
@@ -23,7 +28,7 @@ Open `index.html` in a modern browser with WebGL support. Use the arrow keys to 
 
 ## Next Steps
 
-- Add interactive pickups and more varied obstacle types.
-- Refine physics for smoother movement and jumping.
-- Create objectives, scoring, and multiple levels.
-- Explore using a bundler and local asset pipeline as the project grows.
+ - Add additional levels and extend the storyline.
+ - Integrate sound effects and improved visual feedback.
+ - Refine physics for smoother movement and jumping.
+ - Explore using a bundler and local asset pipeline as the project grows.

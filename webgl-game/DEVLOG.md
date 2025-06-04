@@ -6,25 +6,28 @@ This document summarizes the progress of the WebGL game.
 - Movable cube player using arrow keys.
 - Jumping with the space bar.
 - Ground plane and ambient lighting.
-- Two obstacle cubes added to the scene.
+- Static obstacle cubes block the player.
 - Basic collision detection preventing the player from passing through obstacles.
 - Collectible pickups that update an on-screen score when collected.
+- Two level structure with enemy objects and dynamic spawning.
+- On-screen HUD for score and level with transient story messages.
+ - Levels randomly generate the layout of pickups, obstacles and enemies each playthrough.
 
 ## Changes in This Iteration
-- Added `Pickup` class with spherical collectibles.
-- Environment now spawns three pickups.
-- Player checks for pickup collisions and updates a score display.
-- Game creates a score HUD element and passes it to the player.
+- Levels now generate random positions for pickups, obstacles and enemies on each load.
+- Added camera look-at adjustment so the player can see the play field clearly.
+- Created helper functions in `levels.js` for random vector creation and level generation.
+- Updated documentation to describe dynamic level placement.
 
 ## Remaining Work
 - Improve physics for smoother movement and jumping.
-- Add more obstacle variety and refine models.
-- Begin implementing level progression and objectives.
+- Expand the storyline with additional levels.
+- Add sound effects and better visuals for pickups and enemies.
 - Consider bundling assets locally instead of loading from CDNs.
 
 ## Next Developer Steps
-1. Polish pickup visuals and add sound effects on collection.
-2. Introduce multiple levels with increasing difficulty.
+1. Add more levels and enemy varieties to extend gameplay.
+2. Integrate audio cues for pickups, jumps and enemy collisions.
 3. Review and refine physics to feel more natural.
 4. Investigate bundling assets and managing dependencies locally.
 
